@@ -1,0 +1,95 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>组件</cite></a>
+        <a><cite>数据表格</cite></a>
+        <a><cite>高度最大适应</cite></a>
+    </div>
+</div>
+
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-row layui-col-space10 layui-form-item">
+                    <div class="layui-col-lg3">
+                        <label class="layui-form-label">用户ID：</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="uid" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-col-lg3">
+                        <label class="layui-form-label">用户账号</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="uaccount" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-col-lg3">
+                        <label class="layui-form-label">注册时间</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="cdate" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-col-lg3">
+                        <form action="/Admin/Player/ExportExcel" method="post" target="_blank">
+                            <button id="btn_search" type="button" class="layui-btn layui-btn-warm">查询</button>
+                            <button class="layui-btn layui-btn-normal">导出</button>
+                        </form>
+                    </div>
+                <div class="layui-card-body">
+                    <table class="layui-hide" id="test-table-height"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script>
+layui.config({
+        base: '@Url.Content("~/layui/")' //静态资源所在路径
+}).extend({
+        index: '@Url.Content("lib/index")' //主入口模块
+}).use(['index', 'table', 'jquery', 'laydate'], function() {
+        var admin = layui.admin
+            $ = layui.jquery
+            , laydate = layui.laydate
+            , table = layui.table;
+        $(function(){
+            Search();
+            $('#btn_search').click(function(){
+                Search();
+            });
+            laydate.render({
+              elem: '#cdate'
+              ,range: "~"
+            });
+        });
+        function Search(){
+            table.render({
+                elem: '#test-table-height'
+                , url: "/Admin/Player/PlayerList"
+                , method : "post"
+                , where: {
+                    uid: $("#uid").val(),
+                    uaccount: $('#uaccount').val(),
+                    cdate: $('#cdate').val()
+                }
+                , height: 'full-100'
+                , cellMinWidth: 80
+                , page: true
+                , limit: 30
+                , cols: [[
+                    { type: 'checkbox' }
+                    , { field: 'id', title: '用户Uid', width: 120, sort: false, align: 'center' }
+                    , { field: 'account', title: '用户账号', width: 200, align: 'center' }
+                    , { field: 'createDate', title: '注册时间', width: 250, sort: false, align: 'center' }
+                    , { field: 'lastLoginDate', title: '最后登陆时间', width: 250, align: 'center' }
+                    , { field: 'noLoginDay', title: '未登天数', width: 100,sort: false, align: 'center' }
+                    , { field: 'regIP', title: '注册IP', sort: false, width: 200, align: 'center' }
+                    , { field: 'lastLoginIP', title: '最后登陆IP', sort: true, width: 200, align: 'center' }
+                ]]
+            });
+        }
+});</script>

@@ -1,0 +1,94 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="layui-card layadmin-header">
+    <div class="layui-breadcrumb" lay-filter="breadcrumb">
+        <a lay-href="">主页</a>
+        <a><cite>组件</cite></a>
+        <a><cite>数据表格</cite></a>
+        <a><cite>高度最大适应</cite></a>
+    </div>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-row layui-col-space10 layui-form-item">
+                    <div class="layui-col-lg3">
+                        <label class="layui-form-label">关键词</label>
+                        <div class="layui-input-block">
+                            <input type="text" id="keyword" name="fullname" lay-verify="required" placeholder="" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-col-lg3">
+                        <button id="btn_search" type="button" class="layui-btn layui-btn-warm">查询</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="layui-card-body">
+                        <table class="layui-hide" id="test-table-height" lay-filter="tb_keywords"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        var jq;
+layui.config({
+            base: '@Url.Content("~/layui/")' //静态资源所在路径
+}).extend({
+            index: '@Url.Content("lib/index")' //主入口模块
+}).use(['index', 'table', 'jquery', 'laydate'], function() {
+            var admin = layui.admin
+            $ = jq = layui.jquery
+                , layer = layui.layer
+                , table = layui.table;
+            $(function() {
+                Search();
+                $('#btn_search').click(function() {
+                    Search();
+                });
+            });
+
+            //监听单元格编辑
+              table.on('edit(tb_keywords)', function(obj){
+                var value = obj.value //得到修改后的值
+                ,data = obj.data //得到所在行所有键值
+                ,field = obj.field; //得到字段
+                layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
+                $.post("/Admin/KeyWord/ModifyWord/"+data.id, { word: value } ,function(){})
+              });
+
+            function Search() {
+                table.render({
+                    elem: '#test-table-height'
+                    , url: "/Admin/KeyWord/WordList"
+                    , method: "post"
+                    , where: {
+                        word: $("#keyword").val()
+                    }
+                    , height: 'full-100'
+                    , cellMinWidth: 80
+                    , page: true
+                    , limit: 30
+                    , cols: [[
+                        { type: 'checkbox' }
+                        , { field: 'id', title: 'ID', width: 120, sort: false, align: 'center' }
+                        , { field: 'word', title: '关键词', edit: 'text' , width: 400, align: 'center' }
+                        , { field: 'createDate', title: '创建时间', width: 300, sort: false, align: 'center' }
+                        , { field: 'id', title: '操作', sort: true, width: 200, align: 'center',templet: function(d){
+                            return '<button type="button" onclick="DeleteKeyWord('+ d.id + ')" class="layui-btn layui-btn-danger layui-btn-sm"><i class="layui-icon"></i></button>';
+                        } }
+                    ]]
+                });
+            };
+});
+function DeleteKeyWord(id){
+      if(confirm('确定要删除此数据吗？')){
+             $.post("/Admin/KeyWord/DeleteWord/"+ id, function(result){
+                alert(result);
+                $("#btn_search").click();
+             })
+        }
+}
+    </script>
