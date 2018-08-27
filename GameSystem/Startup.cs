@@ -22,6 +22,7 @@ namespace GameSystem
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,17 +36,22 @@ namespace GameSystem
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-
+            Func<string, bool> func = (s) => s.Contains("localhost");
             app.UseStaticFiles();
+            app.UseSession();
+            app.UseCors(builder =>
+            {
+                builder.SetIsOriginAllowed(func);
+            });
 
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "API/{controller=Home}/{action=Index}/{id?}");
                 routes.MapAreaRoute(
                     name: "admin",
-                    areaName : "Admin",
+                    areaName: "Admin",
                     template: "Admin/{controller=Home}/{action=Index}/{id?}");
             });
         }

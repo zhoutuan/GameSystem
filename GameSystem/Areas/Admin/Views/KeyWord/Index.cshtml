@@ -32,6 +32,7 @@
             </div>
         </div>
     </div>
+    <script src="http://libs.cdnjs.net/moment.js/2.9.0/moment.min.js"></script>
     <script>
         var jq;
 layui.config({
@@ -75,7 +76,9 @@ layui.config({
                         { type: 'checkbox' }
                         , { field: 'id', title: 'ID', width: 120, sort: false, align: 'center' }
                         , { field: 'word', title: '关键词', edit: 'text' , width: 400, align: 'center' }
-                        , { field: 'createDate', title: '创建时间', width: 300, sort: false, align: 'center' }
+                        , { field: 'createDate', title: '创建时间', width: 300, sort: false, align: 'center',templet: function(d) {
+                            return moment(d.createDate).format("YYYY-MM-DD HH:mm:ss")
+                        } }
                         , { field: 'id', title: '操作', sort: true, width: 200, align: 'center',templet: function(d){
                             return '<button type="button" onclick="DeleteKeyWord('+ d.id + ')" class="layui-btn layui-btn-danger layui-btn-sm"><i class="layui-icon"></i></button>';
                         } }

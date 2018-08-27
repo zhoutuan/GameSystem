@@ -39,7 +39,7 @@ namespace GameSystem.Areas.Admin.Controllers
             result.Code = 0;
             result.Count = query.Count();
             result.Msg = "success";
-            result.Data = query.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            result.Data = query.OrderByDescending(s=>s.CreateDate).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             return Json(result);
         }
 

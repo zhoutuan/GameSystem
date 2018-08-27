@@ -46,6 +46,7 @@
         </div>
     </div>
 </div>
+<script src="http://libs.cdnjs.net/moment.js/2.9.0/moment.min.js"></script>
     <script>
 layui.config({
         base: '@Url.Content("~/layui/")' //静态资源所在路径
@@ -84,9 +85,15 @@ layui.config({
                     { type: 'checkbox' }
                     , { field: 'id', title: '用户Uid', width: 120, sort: false, align: 'center' }
                     , { field: 'account', title: '用户账号', width: 200, align: 'center' }
-                    , { field: 'createDate', title: '注册时间', width: 250, sort: false, align: 'center' }
-                    , { field: 'lastLoginDate', title: '最后登陆时间', width: 250, align: 'center' }
-                    , { field: 'noLoginDay', title: '未登天数', width: 100,sort: false, align: 'center' }
+                    , { field: 'createDate', title: '注册时间', width: 250, sort: false, align: 'center', templet: function(d) {
+                        return moment(d.createDate).format('YYYY-MM-DD HH:mm:ss')
+                    } }
+                    , { field: 'lastLoginDate', title: '最后登陆时间', width: 250, align: 'center', templet : function(d) {
+                        return moment(d.lastLoginDate).format('YYYY-MM-DD HH:mm:ss')
+                    } }
+                    , { field: 'noLoginDay', title: '未登天数', width: 100,sort: false, align: 'center',templet : function(d) {
+                        return moment().dayOfYear()-moment(d.lastLoginDate).dayOfYear();
+                    } }
                     , { field: 'regIP', title: '注册IP', sort: false, width: 200, align: 'center' }
                     , { field: 'lastLoginIP', title: '最后登陆IP', sort: true, width: 200, align: 'center' }
                 ]]

@@ -59,12 +59,11 @@ namespace GameSystem.Areas.Admin.Controllers
                 DateTime sdate = DateTime.Parse(cdate.Split("~".ToCharArray())[0].Trim());
                 DateTime edate = DateTime.Parse(cdate.Split("~".ToCharArray())[1].Trim());
                 queryable = queryable.Where((u) => u.CreateDate >= sdate && u.CreateDate <= edate);
-
             }
             user.Code = 0;
             user.Msg = "success";
             user.Count = queryable.Count();
-            user.Data = queryable.Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
+            user.Data = queryable.OrderByDescending(s=>s.CreateDate).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList();
             return Json(user);
         }
 

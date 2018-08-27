@@ -28,6 +28,7 @@
     <Folder Include="EntityFrame\Models\" />
     <Folder Include="EntityFrame\DataBase\" />
     <Folder Include="Areas\Admin\Views\Player\" />
+    <Folder Include="Areas\Admin\Filter\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Area\Admin\Views\_ViewStart.cshtml" />
@@ -468,6 +469,7 @@
     <Content Remove="wwwroot\layui\tpl\system\more.html" />
     <Content Remove="wwwroot\layui\tpl\system\theme.html" />
     <Content Remove="wwwroot\layui\tpl\system\璇存槑.txt" />
+    <Content Remove="wwwroot\css\login.css" />
   </ItemGroup>
   <ItemGroup>
     <None Include="wwwroot\layadmin\layui\.DS_Store" />
@@ -762,5 +764,6 @@
     <None Include="wwwroot\layui\tpl\system\more.html" />
     <None Include="wwwroot\layui\tpl\system\theme.html" />
     <None Include="wwwroot\layui\tpl\system\璇存槑.txt" />
+    <None Include="wwwroot\css\login.css" />
   </ItemGroup>
 </Project>
