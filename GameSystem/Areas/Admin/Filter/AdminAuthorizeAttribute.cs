@@ -5,10 +5,11 @@ using System.Text;
 
 namespace GameSystem.Areas.Admin.Filter
 {
-    public class AdminAuthorizeAttribute: Attribute, IAuthorizationFilter
+    public class AdminAuthorizeAttribute: IAuthorizationFilter
     {
         public AdminAuthorizeAttribute()
         {
+            //IActionFilter
         }
 
         public void OnAuthorization(AuthorizationFilterContext context)

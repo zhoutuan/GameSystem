@@ -6,6 +6,8 @@ using GameSystem.EntityFrame.DataBase;
 using GameSystem.EntityFrame.Models;
 using GameSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using GameSystem.Factory;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -14,10 +16,10 @@ namespace GameSystem.Areas.Admin.Controllers
     [Area(areaName: "Admin")]
     public class KeyWordController : Controller
     {
-        MySQLDbContext mySQLDbContext;
+        BaseDbContext mySQLDbContext;
         public KeyWordController()
         {
-            mySQLDbContext = new MySQLDbContext();
+            mySQLDbContext = DataBaseFactory.GetDbContext();
         }
         // GET: /<controller>/
         public IActionResult Index()

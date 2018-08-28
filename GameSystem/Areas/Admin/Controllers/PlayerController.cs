@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 using OfficeOpenXml;
 using System.IO;
+using GameSystem.Factory;
 using Microsoft.AspNetCore.Hosting;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -19,13 +20,13 @@ namespace GameSystem.Areas.Admin.Controllers
     [Area(areaName: "Admin")]
     public class PlayerController : Controller
     {
-        MySQLDbContext mySQLDbContext;
+        BaseDbContext mySQLDbContext;
         private IHostingEnvironment _hostingEnvironment;
 
         public PlayerController(IHostingEnvironment hostingEnvironment)
         {
             _hostingEnvironment = hostingEnvironment;
-            mySQLDbContext = new MySQLDbContext();
+            mySQLDbContext = DataBaseFactory.GetDbContext();
         }
 
         // GET: /<controller>/

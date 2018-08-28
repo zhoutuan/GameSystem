@@ -10,14 +10,14 @@ using GameSystem.Areas.Admin.Filter;
 using Newtonsoft.Json;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
+using GameSystem.Commons;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace GameSystem.Controllers.Admin
 {
-    [AdminAuthorize]
     [Area(areaName: "Admin")]
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         [AllowAnonymous]
         [HttpGet]
@@ -40,14 +40,23 @@ namespace GameSystem.Controllers.Admin
             }
             else
             {
-                if (user.Account == "admin" && user.Password == "123456")
+                string accountConfig = ConfigHelper.GetValue("Account");
+                var linq = from q in accountConfig.Split("|").AsEnumerable()
+                           select new User
+                           {
+                               Account = q.Split(",")[0],
+                               Password = q.Split(",")[1]
+                           };
+                if (linq.Count(s => s.Account.Equals(user.Account) && s.Password.Equals(user.Password)) > 0)
                 {
+                    HttpContext.Session.Set<User>("user", user);
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine($"登录成，用户信息是：{ JsonConvert.SerializeObject(HttpContext.Session.Get<User>("user")) }");
                     return Json(new
                     {
                         Code = 0,
                         Message = "登录成功"
                     });
-                    //this.HttpContext.Session.Set("user", Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(user)));
                 }
                 else
                 {
@@ -63,21 +72,6 @@ namespace GameSystem.Controllers.Admin
         // GET: /<controller>/
         public IActionResult Index()
         {
-            using (MySQLDbContext mySQLDbContext = new MySQLDbContext())
-            {
-                mySQLDbContext.UserInfos.Add(new UserInfo()
-                {
-                    Account = "aaa",
-                    CreateDate = DateTime.Now,
-                    LastLoginIP = "127.0.0.1",
-                    Password = "1234566",
-                    NoLoginDay = 5,
-                    RegIP = "127.0.0.1",
-                    LastLoginDate = DateTime.Now.AddHours(2)
-                });
-                int i = mySQLDbContext.SaveChanges();
-                Console.WriteLine($"effect count : { i }");
-            }
             return View();
         }
     }

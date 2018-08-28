@@ -9,17 +9,21 @@ using Newtonsoft.Json;
 using GameSystem.EntityFrame.DataBase;
 using GameSystem.EntityFrame.Models;
 using GameSystem.Commons;
+using Microsoft.AspNetCore.Authorization;
+using GameSystem.Areas.Admin.Filter;
+using GameSystem.Factory;
 
 namespace GameSystem.Controllers
 {
     public class HomeController : Controller
     {
-        MySQLDbContext mySQLDbContext;
+        BaseDbContext mySQLDbContext;
         public HomeController()
         {
-            mySQLDbContext = new MySQLDbContext();
+            mySQLDbContext = DataBaseFactory.GetDbContext();
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
@@ -28,14 +32,12 @@ namespace GameSystem.Controllers
         public IActionResult About()
         {
             ViewData["Message"] = "Your application description page.";
-
             return View();
         }
 
         public IActionResult Contact()
         {
             ViewData["Message"] = "Your contact page.";
-
             return View();
         }
 

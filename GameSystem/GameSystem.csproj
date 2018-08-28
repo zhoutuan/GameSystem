@@ -29,6 +29,7 @@
     <Folder Include="EntityFrame\DataBase\" />
     <Folder Include="Areas\Admin\Views\Player\" />
     <Folder Include="Areas\Admin\Filter\" />
+    <Folder Include="Factory\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="Area\Admin\Views\_ViewStart.cshtml" />
@@ -765,5 +766,14 @@
     <None Include="wwwroot\layui\tpl\system\theme.html" />
     <None Include="wwwroot\layui\tpl\system\璇存槑.txt" />
     <None Include="wwwroot\css\login.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Areas\Admin\Filter\AdminActionFilter.cs" />
+    <Compile Remove="Areas\Admin\Filter\AdminAuthorizeAttribute.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 </Project>
